@@ -1,0 +1,115 @@
+{
+    "name": "Volteras",
+    "logo": {
+      "light": "/logo/light.png",
+      "dark": "/logo/dark.png"
+    },
+    "favicon": "/favicon.svg",
+    "colors": {
+      "primary": "#1371d4",
+      "light": "#4086dc",
+      "dark": "#1371d4"
+    },
+    "topbarCtaButton": {
+      "name": "Get started",
+      "url": "https://volteras.com/contact-us"
+    },
+    "topbarLinks": [
+      {
+        "name": "Sign In",
+        "url": "https://developers.volteras.com/sign-in"
+      }
+    ],
+    "tabs": [
+        {
+            "name": "API Reference",
+            "url": "api-reference"
+        }
+    ],
+    "navigation": [
+        {
+            "group": "Overview",
+            "pages": [
+                "introduction",
+                "list-of-available-vehicle-commands",
+                "websocket-api",
+                "standardized-units-of-measurement-in-our-api",
+                "errors"
+            ]
+        },
+        {
+            "group": "Authentication",
+            "pages": [
+              "api-reference/authentication/auth-token",
+              "api-reference/authentication/test-token"
+            ]
+          },
+          {
+            "group": "Accounts",
+            "pages": [
+              "api-reference/accounts/list-accounts",
+              "api-reference/accounts/get-account",
+              "api-reference/accounts/action-connect",
+              "api-reference/accounts/action-disconnect"
+            ]
+          },
+          {
+            "group": "Vehicles",
+            "pages": [
+              "api-reference/vehicles/list-vehicles",
+              "api-reference/vehicles/get-vehicle",
+              "api-reference/vehicles/get-vehicle-options",
+              "api-reference/vehicles/update-registration-plate",
+              "api-reference/vehicles/get-vehicle-specifications",
+              "api-reference/vehicles/get-vehicle-trim-suggestions",
+              "api-reference/vehicles/action-disconnect",
+              "api-reference/vehicles/update-vehicle-trim"
+            ]
+          },
+          {
+            "group": "Vehicle Telemetry",
+            "pages": [
+              "api-reference/vehicle-telemetry/get-vehicle-telemetry"
+            ]
+          },
+          {
+            "group": "Vehicle Command Executions",
+            "pages": [
+              "api-reference/vehicle-command-executions/list-vehicle-command-executions",
+              "api-reference/vehicle-command-executions/get-vehicle-command-execution",
+              "api-reference/vehicle-command-executions/action-actuate-front-trunk",
+              "api-reference/vehicle-command-executions/action-actuate-rear-trunk",
+              "api-reference/vehicle-command-executions/action-climate-off",
+              "api-reference/vehicle-command-executions/action-climate-on",
+              "api-reference/vehicle-command-executions/action-close-charge-port",
+              "api-reference/vehicle-command-executions/action-lock-doors",
+              "api-reference/vehicle-command-executions/action-open-charge-port",
+              "api-reference/vehicle-command-executions/action-set-charge-limit",
+              "api-reference/vehicle-command-executions/action-set-temperature",
+              "api-reference/vehicle-command-executions/action-start-charging",
+              "api-reference/vehicle-command-executions/action-start-hvac-system",
+              "api-reference/vehicle-command-executions/action-stop-charging",
+              "api-reference/vehicle-command-executions/action-unlock-doors"
+            ]
+          },
+          {
+            "group": "Vehicle Charging History",
+            "pages": [
+              "api-reference/vehicle-charging-history/list-vehicle-charging-history",
+              "api-reference/vehicle-charging-history/get-vehicle-charging-history"
+            ]
+          },
+          {
+            "group": "BESS Telemetry",
+            "pages": [
+              "api-reference/bess-telemetry/bess-single-telemetry",
+              "api-reference/bess-telemetry/bess-aggregate-telemetry"
+            ]
+          }
+    ],
+    "footerSocials":
+      {
+          "twitter": "https://twitter.com/volterapower?lang=en",
+          "linkedin": "https://www.linkedin.com/company/volteras/"
+      }
+  }

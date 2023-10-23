@@ -1,0 +1,101 @@
+---
+title: Listing filter JSON
+category: 636944be2d7737008ebc4c1e
+hidden: false
+---
+
+You can apply one or more filters when querying a List in the Volteras Connect API.
+This API enables the execution of advanced queries and server-side result filtering.
+The filter structure closely resembles SQL queries, incorporating elements such as the `field`,
+`operator` and `value` (for example: `name != 'Tesla,'` where `name` represents the _field_,
+`!=` denotes the _operator_, and `'Tesla'` signifies the _value_).
+
+To implement these filters on your list, you need to include the filter field in your request.
+A basic request with a filter would resemble the following:
+
+```json JSON
+{
+  "maxPageSize": ...,
+  "pageToken": ...,
+  "filter": {
+    "field": "name",
+    "operator": "==",
+    "value": "TESLA"
+  }
+}
+```
+
+You can add more than one filter using array (`[]`) instead of object (`{}`).
+The filter supports `boolean functions`. It means that you can filter the query using `or`, `and`, and `not` combined with operators.
+
+```json JSON
+{
+  "maxPageSize": ...,
+  "pageToken": ...,
+  "filter": [
+    {
+      "or": [
+        {
+          "and": [
+            {
+              "field": "name",
+              "operator": "==",
+              "value": "TESLA",
+              "model": "Make"
+            },
+            {
+              "field": "color",
+              "operator": "==",
+              "value": "Red"
+            }
+          ],
+          "not": [{
+            "field": "vin",
+            "operator": "==",
+            "value": "AAAAA1234567AAAAAAA"
+          }]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Note: `or` and `and` can reference a list of at least one element. `not` must reference a list of exactly one element.
+
+## Specification of the filter object
+
+| Property | Type   | Description                                                 |
+| -------- | ------ | ----------------------------------------------------------- |
+| field    | string | Field name to apply the filter.                             |
+| operator | string | Operator to be applied on the filter. See the list bellow.  |
+| value    | string | Value to be combined with the operator to apply the filter. |
+| model    | string | _Optional._ The model name to apply the filter.             |
+
+## List of boolean functions
+
+| Function |
+| -------- |
+| `and`    |
+| `or`     |
+| `not`    |
+
+## List of the supported operators
+
+| Operator    |
+| ----------- |
+| `isNull`    |
+| `isNotNull` |
+| `==`        |
+| `!=`        |
+| `>`         |
+| `<`         |
+| `>=`        |
+| `<=`        |
+| `like`      |
+| `ilike`     |
+| `notIlike`  |
+| `in`        |
+| `notIn`     |
+| `any`       |
+| `notAny`    |

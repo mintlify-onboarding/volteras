@@ -1,0 +1,201 @@
+---
+title: WebSocket API
+category: 636944be2d7737008ebc4c1e
+hidden: false
+description: "With the WebSocket API you are able to connect to the vehicle through Volteras Connect.
+The main feature of the WebSocket API currently is the subscription for the vehicle's streaming data.
+Using this API you are able to receive the live streaming data coming from the vehicle"
+---
+
+
+## Endpoint
+
+The URL of the WebSocket is: `wss://ws-api.volteras.com/v1`
+
+## Authentication
+
+For the handshake of the connection your header must provide the access token code bearer for the key `Authorization`.
+It is the exactly the same way you execute a request on our authenticated REST API:
+
+```text
+Authorization: Bearer eyJhbGciOiJIUzI....
+```
+
+The token to be used can be obtained using the Authentication endpoint on our REST API.
+
+## Sending a message
+
+The message sent by your WebSocket client _must_ always be a `JSON` and include some properties:
+
+| Property      | Type   | Description                                                                                |
+| ------------- | ------ | ------------------------------------------------------------------------------------------ |
+| authorization | string | The same format of the header. We require the authorization for every single message sent. |
+| action        | string | Action to be executed. See below.                                                          |
+| id            | string | _Optional._ ID of the message to be tracked when the server responds.                      |
+| parameters    | object | _Optional._ Object with parameters for the action.                                         |
+
+The `id` field is used when you need to interpret the response of an action. Once the WebSocket is async you are able to
+send many messages at once. If you send this property the response will always come with the `id` that was provided.
+
+## Receiving a message
+
+The message sent by server include those properties:
+
+| Property    | Type   | Description                                                    |
+| ----------- | ------ | -------------------------------------------------------------- |
+| messageType | string | Type of the message.                                           |
+| id          | string | _Optional._ ID of the message that this message is related to. |
+
+## Actions
+
+Actions are basically the messages you can send to the server.
+
+### Action: `control:ping`
+
+Sends a `ping` message to the server.
+This can be useful if you want to keep the connection alive.
+
+Response message type: `control:pong`
+
+Example of message:
+
+```json
+{
+  "id":"1",
+  "action":"control:ping",
+  "authorization":"Bearer eyJhbGciO..."
+}
+```
+
+Response:
+
+```json
+{
+  "id": "1",
+  "messageType": "control:pong"
+}
+```
+
+### Action: `vehicles:data:subscribe`
+
+Subscribe to receive the live streamed data for a vehicle.
+
+Required parameters:
+
+| Property  | Type   | Description                                                 |
+| --------- | ------ | ----------------------------------------------------------- |
+| vehicleId | string | ID of the vehicle you want to subscribe for streaming data. |
+
+Response message type: `control:vehicles:data:subscribe`
+
+Example of message:
+
+```json
+{
+  "id":"1",
+  "action":"vehicles:data:subscribe",
+  "authorization":"Bearer eyJhbGciO..."},
+  "parameters":{
+    "vehicleId":"jv5pp-1hje5-jg56k-gzdbs-yc311"
+  }
+}
+
+```
+
+Response:
+
+```json
+{
+  "id": "1",
+  "messageType": "control:vehicles:data:subscribed",
+  "data": {
+    "vehicleId": "jv5pp-1hje5-jg56k-gzdbs-yc311"
+  }
+}
+```
+
+Format of the incoming vehicle data message:
+
+```json
+{
+  "messageType": "vehicles:data:update",
+  "data":
+    {
+      "vehicleId": "jv5pp-1hje5-jg56k-gzdbs-yc311",
+      "timestamp": "2022-11-08T14:06:40.472000",
+      "speed": 0.0,
+      "odometer": 6003.2,
+      "stateOfCharge": 87.0,
+      "elevation": -3.0,
+      "estimatedHeading": 326.0,
+      "estimatedLatitude": 51.0,
+      "estimatedLongitude": 0.1,
+      "power": 2.0,
+      "shiftState": "P",
+      "range": 241.0,
+      "estimatedRange": 248.0,
+      "heading": 47.0
+    }
+}
+```
+
+### Action: `vehicles:data:unsubscribe`
+
+Unsubscribe the live streamed data for a vehicle.
+
+Response message type: `control:vehicles:data:unsubscribed`
+
+Required parameters:
+
+| Property  | Type   | Description                                                    |
+| --------- | ------ | -------------------------------------------------------------- |
+| vehicleId | string | ID of the vehicle you want to unsubscribe from streaming data. |
+
+Example of message:
+
+```json
+{
+  "id":"1",
+  "action":"vehicles:data:unsubscribe",
+  "authorization":"Bearer eyJhbGciO...",
+  "parameters":{
+    "vehicleId":"jv5pp-1hje5-jg56k-gzdbs-yc311"
+  }
+}
+
+```
+
+Response:
+
+```json
+{
+  "id": "1",
+  "messageType": "control:vehicles:data:unsubscribed",
+  "data": {
+    "vehicleId": "jv5pp-1hje5-jg56k-gzdbs-yc311"
+  }
+}
+```
+
+## Error messages
+
+All the errors returned by the API uses the following schema:
+
+| Property    | Type   | Description                                           |
+| ----------- | ------ | ----------------------------------------------------- |
+| id          | string | ID of the request.                                    |
+| timestamp   | string | An ISO8601 formatted date and time of error.          |
+| messageType | string | Always `control:error`.                               |
+| error       | string | Error type (see list bellow).                         |
+| message     | string | A human-friendly short description of the error.      |
+| data        | object | _Optional._ Any additional data that helps the debug. |
+
+## Disconnection
+
+The server will disconnect you if:
+
+- you provide an invalid authentication token when connecting or
+- you provide an invalid authentication token when executing an action or
+- the last `access token` you sent expires or
+- you send a format invalid message or
+- 15 minutes of inactivity from any sides (server or client).

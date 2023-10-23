@@ -1,0 +1,36 @@
+---
+title: Errors
+category: 636944be2d7737008ebc4c1e
+hidden: false
+description: "The API uses HTTP status codes to indicate success or failure of API requests."
+---
+
+| Status code | Description                                                  |
+| ----------- | ------------------------------------------------------------ |
+| 2XX         | Request processed successfully.                              |
+| 4XX         | Client error (e.g. invalid request body or incorrect field). |
+| 5XX         | API's internal error.                                        |
+
+## Error response schema
+
+All the errors returned by the API uses the following schema:
+
+| Field     | Type   | Description                                           |
+| --------- | ------ | ----------------------------------------------------- |
+| requestId | string | ID of the request.                                    |
+| timestamp | string | An ISO8601 formatted date and time of error.          |
+| error     | string | Error type (see list bellow).                         |
+| message   | string | A human-friendly short description of the error.      |
+| data      | object | _Optional._ Any additional data that helps the debug. |
+
+## List of error types
+
+The `error` field can be one of those bellow:
+
+| Error                      | Description                                                            |
+| -------------------------- | ---------------------------------------------------------------------- |
+| `AUTHENTICATION_ERROR`     | Error related to authentication issues.                                |
+| `SERVER_ERROR`             | Error raised by the server.                                            |
+| `REQUEST_VALIDATION_ERROR` | Error related to request validation (e.g. field is invalid or missing) |
+| `RESOURCE_NOT_FOUND`       | The requested resource was not found.                                  |
+| `UNKNOWN_ERROR`            | Unknown error.                                                         |
