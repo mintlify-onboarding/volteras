@@ -20,6 +20,11 @@
         "url": "https://developers.volteras.com/sign-in"
       }
     ],
+    "api": {
+      "auth": {
+        "method": "bearer"
+      }
+    },
     "tabs": [
         {
             "name": "API Reference",
